@@ -8,4 +8,4 @@
  그림 담당:홍동인
 
 스크립트 폴더 경로: fire_prevention_education/Assets/Script
-실행파일 경로: fire_prevention_education/Fire_Prevention/fire_prevention_education.exe
+실행파일 경로: fire_prevention_education/Executable files/fire_prevention_education.exe

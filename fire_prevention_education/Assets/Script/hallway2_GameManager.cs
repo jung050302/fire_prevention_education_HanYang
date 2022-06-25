@@ -43,15 +43,15 @@ public class hallway2_GameManager : MonoBehaviour
             TextBox.SetActive(false);
         }
     }
-    void Save(string a, bool b)
+    void Save(string a, bool b)//텍스트를 딱 한번만 출력하기위한 저장함수
     {
         PlayerPrefs.SetInt(a, System.Convert.ToInt16(b));
     }
-    void Load(string a)
+    void Load(string a)//저장값을 불러오는 함수
     {
         TextOutput = System.Convert.ToBoolean(PlayerPrefs.GetInt(a));
     }
-    void ClearAllSaveData()
+    void ClearAllSaveData()//데이터 삭제 함수
     {
         PlayerPrefs.DeleteAll();
     }
