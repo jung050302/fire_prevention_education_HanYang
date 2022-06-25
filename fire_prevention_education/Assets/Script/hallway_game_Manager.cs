@@ -8,12 +8,6 @@ public class hallway_game_Manager : MonoBehaviour
 
     public GameObject textBox;//Text옵젝
     public GameObject nametext;//nameText UI
-    string CharacterName;//캐릭터의 이름
-     
-    string[] textarr = { "이제 비상벨을 울려서 사람들에게 알려야 해!", "됐어! 이제 이 건물을 탈출해야 해!" };//텍스트 리스트
-    public int textcount;//텍스트 카운트가 증가할때마다 다른 텍스트를 출력함
-    public bool textprint = true;//true 라면 클릭했을때 텍스트 출력 false면 출력하지 않음
-
     public GameObject text;//Text UI
     public GameObject player;
 
@@ -22,20 +16,25 @@ public class hallway_game_Manager : MonoBehaviour
     public bool TextOutput = false;//false 면 텍스트창을 활성화시킴 true 비활성화
 
     public bool a = false;//update 함수안에있는 else문을 한번만 실행 시키기위한 변수
+
+    public GameObject GameOverFire;
+    public GameObject GameOverElevator;
+    public GameObject Sound;
     void Start()
     {
+
+
         
-        
-         
         textBox.SetActive(true);
-        textcount = 0;//textarr의 텍스트들을 순서대로 출력함
-        text.GetComponent<Text>().text = textarr[textcount];//텍스트 오브젝트가 컴포턴트로 가지고있는 Text를 가져와서 Text값을 변경함
+        
+        
 
         player.SetActive(false);
-        CharacterName = "김안전";
         
+        Load("TextOutput_2");
 
-         
+
+
     }
 
     // Update is called once per frame
@@ -43,41 +42,21 @@ public class hallway_game_Manager : MonoBehaviour
     {
         if (!TextOutput)//TextOutput이 false라면
         {
-            //텍스트 창을 활성화 시킴
-            nametext.GetComponent<Text>().text = CharacterName;
             textBox.SetActive(true);
             player.SetActive(false);
-            
-            if (textcount == textarr.Length )
+            nametext.GetComponent<Text>().text = "김안전";
+            text.GetComponent<Text>().text = "이제 비상벨을 울려서 사람들에게 알려야 해!";
+            if (Input.GetMouseButtonDown(0))
             {
-                //만약 출력할 텍스트가 없다면 텍스트창을 비활성화 시킴
-                if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint)
-                {
-
-                    TextOutput = true;
-                    
-                    textBox.SetActive(false);
-                    player.SetActive(true);
-                    a = false;
-                }
-
-            }
-            else if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint)//클릭할때마다 대화를 출력함
-            {
-                textcount++;
-                text.GetComponent<Text>().text = textarr[textcount];
-
-            }
-            if (textcount == 1)
-            {
-                
-                 
-                textprint = false;
+                textBox.SetActive(false);
+                player.SetActive(true);
                 TextOutput = true;
-                a = false;
+                Save("TextOutput_2", TextOutput);
+                a = true;
             }
             
-             
+
+
         }
         else
         {
@@ -92,13 +71,30 @@ public class hallway_game_Manager : MonoBehaviour
             a = true;
              
         }
-
-
+        if (GameOverElevator.activeSelf == true)
+        {
+            Sound.SetActive(false);
+        }
+        if (GameOverFire.activeSelf == true)
+        {
+            Sound.SetActive(false);
+        }
 
 
 
     }
-    
+    void Save(string a, bool b)
+    {
+        PlayerPrefs.SetInt(a, System.Convert.ToInt16(b));
+    }
+    void Load(string a)
+    {
+        TextOutput = System.Convert.ToBoolean(PlayerPrefs.GetInt(a));
+    }
+    void ClearAllSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
     IEnumerator FadeInStart()
     {
 
@@ -109,7 +105,7 @@ public class hallway_game_Manager : MonoBehaviour
             background.GetComponent<SpriteRenderer>().color = c;
             yield return null;
         }
-        textprint = true;
+        
     }
     IEnumerator FadeOutStart()
     {
@@ -122,7 +118,7 @@ public class hallway_game_Manager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(1);
-        textprint = true;
+        
 
     }
 }

@@ -7,6 +7,9 @@ public class Collision_interaction : MonoBehaviour
     // Start is called before the first frame update
     public GameObject mouseButton;//마우스 모양 이미지 게임 오브젝트
     public bool click = false;//버튼을 눌렀는지 감지
+
+    public GameObject Player;
+    public GameObject TextBox;
     void Start()
     {
 
@@ -17,7 +20,13 @@ public class Collision_interaction : MonoBehaviour
     {
         if (click)
         {
-            mouseButton.SetActive(!true);//만약 버튼을 누르면 버튼을 계속 비활성화
+            mouseButton.SetActive(false);//만약 버튼을 누르면 버튼을 계속 비활성화
+            if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return)))
+            {
+                Player.SetActive(true);
+                TextBox.SetActive(false);
+
+            }
         }
     }
     private void OnTriggerEnter2D(Collider2D other)

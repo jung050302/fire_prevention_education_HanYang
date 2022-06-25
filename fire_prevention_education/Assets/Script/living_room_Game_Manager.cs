@@ -24,7 +24,7 @@ public class living_room_Game_Manager : MonoBehaviour
     bool a = false;
     void Start()
     {
-        
+        Load("TextOutput");
         textBox.SetActive(true);
         textcount = 0;
         text.GetComponent<Text>().text = textarr[textcount];
@@ -49,7 +49,7 @@ public class living_room_Game_Manager : MonoBehaviour
                 if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint)
                 {
                     TextOutput = true;
-                    
+                    Save("TextOutput", TextOutput);
                     textBox.SetActive(false);
                     player.SetActive(true);
                 }
@@ -88,7 +88,18 @@ public class living_room_Game_Manager : MonoBehaviour
          
 
     }
-    
+    void Save(string a, bool b)
+    {
+        PlayerPrefs.SetInt(a, System.Convert.ToInt16(b));
+    }
+    void Load(string a)
+    {
+        TextOutput = System.Convert.ToBoolean(PlayerPrefs.GetInt(a));
+    }
+    void ClearAllSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
     IEnumerator FadeInStart()
     {
 

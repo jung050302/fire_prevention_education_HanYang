@@ -22,51 +22,67 @@ public class MyRoom_Game_Manager : MonoBehaviour
     public GameObject player;
 
     public GameObject background;
+    bool textOutput;
      
     void Start()
     {
+        Load("textOutput");
+        textOutput = false;
+        Load("textOutput");
         textBox.SetActive(true);
         textcount = 0;
         text.GetComponent<Text>().text = textarr[textcount];
 
         player.SetActive(false);
         Name = "김안전";
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        nametext.GetComponent<Text>().text = Name;
-         
-        
-        if (textcount == textarr.Length - 1)
+        if (textOutput==false)
         {
-            if((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint)
+            nametext.GetComponent<Text>().text = Name;
+
+
+            if (textcount == textarr.Length - 1)
             {
-                textBox.SetActive(false);
-                player.SetActive(true);
+                if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint)
+                {
+                    textBox.SetActive(false);
+                    player.SetActive(true);
+                    textOutput = true;
+                    Save("textOutput", textOutput);
+                }
+
+            }
+            else if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint)//클릭할때마다 대화를 출력함
+            {
+                textcount++;
+                text.GetComponent<Text>().text = textarr[textcount];
+
+            }
+            if (textcount == 2)
+            {
+                StartCoroutine(FadeOutStart());
+                textprint = false;
+            }
+            if (textcount == 5)
+            {
+                StartCoroutine(FadeInStart());
+                textprint = false;
+
+                smoke.SetActive(true);
             }
              
         }
-        else if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && textprint )//클릭할때마다 대화를 출력함
+        else
         {
-            textcount++;
-            text.GetComponent<Text>().text = textarr[textcount];
-            
+            textBox.SetActive(false);
+            player.SetActive(true);
         }
-        if (textcount == 2)
-        {
-            StartCoroutine(FadeOutStart());
-            textprint = false;
-        }
-        if (textcount == 5)
-        {
-            StartCoroutine(FadeInStart());
-            textprint = false;
-
-            smoke.SetActive(true);
-        }
-        
+         
         
         IEnumerator FadeInStart()
         {
@@ -96,5 +112,16 @@ public class MyRoom_Game_Manager : MonoBehaviour
         }
 
     }
-    
+    void Save(string a,bool b)
+    {
+        PlayerPrefs.SetInt(a, System.Convert.ToInt16(b));
+    }
+    void Load(string a)
+    {
+        textOutput = System.Convert.ToBoolean(PlayerPrefs.GetInt(a));
+    }
+    void ClearAllSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }

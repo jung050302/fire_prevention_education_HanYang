@@ -9,7 +9,7 @@ public class Start_Button : MonoBehaviour
     
     void Start()
     {
-         
+        ClearAllSaveData();
     }
 
     // Update is called once per frame
@@ -21,5 +21,9 @@ public class Start_Button : MonoBehaviour
     {
         //시작 버튼을 누르면 씬을 로드함
         SceneManager.LoadScene(SceneName);
+    }
+    void ClearAllSaveData()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }
